@@ -1,0 +1,37 @@
+#!/bin/bash
+
+ROOT=`dirname $0`
+MOCKPROJECT=$ROOT/../../usenode-release-mockproject
+
+function assert {
+    ACTUAL=$1
+    EXPECTED=$2
+    MESSAGE=$3
+
+    if [ "$ACTUAL" == "$EXPECTED" ]; then
+        echo "PASS: $MESSAGE"
+    else
+        echo "FAIL: $MESSAGE"
+        echo "  Failed asserting that '$ACTUAL' is equal to '$EXPECTED'."
+    fi
+}
+
+# Test input validation
+MISSING_ARGUMENTS=`$ROOT/../bin/usenode-release`
+assert "$MISSING_ARGUMENTS" "Usage: usenode-publish path/to/project [new_version]" "Script outputs usage message if no arguments are passed"
+
+CANNOT_FIND_PACKAGE_JSON=`$ROOT/../bin/usenode-release $MOCKPROJECT-does-not-exist`
+assert "$CANNOT_FIND_PACKAGE_JSON" "Could not find package.json at $MOCKPROJECT-does-not-exist/package.json" "Script throws an error if cannot find package.json at project location"
+
+# Test package.json is updated
+$ROOT/create-mock-project $MOCKPROJECT > /dev/null
+$ROOT/../bin/usenode-release $MOCKPROJECT 2.3.4
+
+PACKAGE_VERSION_NUMBER=`cat $MOCKPROJECT/package.json | egrep '"version"'`
+assert "$PACKAGE_VERSION_NUMBER" '"version": "2.3.4"' "Version number is updated in package.json"
+
+PACKAGE_COMMIT_MESSAGE_FROM_LOG=`cd $MOCKPROJECT; git log package.json | egrep 'Version'`
+assert "$PACKAGE_COMMIT_MESSAGE_FROM_LOG" "    Version for release 2.3.4" "Changes to package.json are commited"
+
+REMOTE_LOG=`cd $MOCKPROJECT-head; git log | egrep 'Version'`
+assert "$REMOTE_LOG" "    Version for release 2.3.4" "Changes are pushed to remote"

@@ -1,0 +1,42 @@
+#!/bin/bash
+
+CURRENT_DIR=$(pwd)
+
+PROJECT=$1
+NEW_VERSION=$2
+PACKAGE="$PROJECT/package.json"
+
+if [ "x$PROJECT" = "x" ]; then
+    echo "Usage: usenode-publish path/to/project [new_version]"
+    exit 0
+fi
+
+if [ ! -r $PACKAGE ]; then
+    echo "Could not find package.json at $PACKAGE"
+    exit 0
+fi
+
+PROJECT_NAME=`cat $PACKAGE | egrep '"name"' | awk -F \" '/([\d]*)/{ print $4}'`
+echo "Publishing '$PROJECT_NAME'."
+
+CURRENT_VERSION=`cat $PACKAGE | egrep '"version"' | awk -F \" '/([\d]*)/{ print $4}'`
+echo "Current version is $CURRENT_VERSION."
+
+if [ "x$NEW_VERSION" = "x" ]; then
+    echo "Enter the new version:"
+    read NEW_VERSION
+fi
+
+if [ "$CURRENT_VERSION "== "$NEW_VERSION" ]; then
+    echo "Cannot create release, $NEW_VERSION is the current version."
+    exit 0
+fi
+
+echo "Creating version $NEW_VERSION"
+sed /version/s/$CURRENT_VERSION/$NEW_VERSION/ $PACKAGE > $PACKAGE.tmp && mv $PACKAGE.tmp $PACKAGE
+
+(cd $PROJECT
+git commit -m "Version for release $NEW_VERSION" package.json
+git tag v$NEW_VERSION
+git push origin master
+git push --tags)

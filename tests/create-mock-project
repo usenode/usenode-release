@@ -1,0 +1,30 @@
+#!/bin/bash
+
+MOCKPROJECT=$1
+
+if [ "x$MOCKPROJECT" = "x" ]; then
+    echo "Usage: create-mock-project path/to/project"
+    exit 0
+fi
+
+echo "Mocking project at $1"
+
+rm -fr $MOCKPROJECT $MOCKPROJECT-head
+mkdir $MOCKPROJECT
+
+CURRENT_DIR=$(pwd)
+
+(cd $MOCKPROJECT
+git init
+echo '{' > package.json
+echo '"name": "mockproject",' >> package.json
+echo '"version": "1.2.3"' >> package.json
+echo '}' >> package.json
+git add package.json
+git commit -m "Adding package.json" package.json)
+
+(git clone --bare $MOCKPROJECT $MOCKPROJECT-head)
+
+(cd $MOCKPROJECT
+MOCKPROJECT_NAME=`basename $MOCKPROJECT`
+git remote add origin ../$MOCKPROJECT_NAME-head)
