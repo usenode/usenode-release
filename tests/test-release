@@ -16,6 +16,9 @@ function assert {
     fi
 }
 
+# Make sure we can assert things
+assert true true "Can make assertions"
+
 # Test input validation
 MISSING_ARGUMENTS=`$ROOT/../bin/usenode-release`
 assert "$MISSING_ARGUMENTS" "Usage: usenode-publish path/to/project [new_version]" "Script outputs usage message if no arguments are passed"
