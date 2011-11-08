@@ -27,7 +27,7 @@ if [ "x$NEW_VERSION" = "x" ]; then
     read NEW_VERSION
 fi
 
-if [ "$CURRENT_VERSION "== "$NEW_VERSION" ]; then
+if [ "$CURRENT_VERSION" == "$NEW_VERSION" ]; then
     echo "Cannot create release, $NEW_VERSION is the current version."
     exit 0
 fi
