@@ -11,5 +11,4 @@
 
 # Todo
 
-* Npm publish
 * Makefile template
