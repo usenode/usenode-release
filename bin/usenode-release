@@ -40,3 +40,5 @@ git commit -m "Version for release $NEW_VERSION" package.json
 git tag v$NEW_VERSION
 git push origin master
 git push --tags)
+
+npm publish $PROJECT

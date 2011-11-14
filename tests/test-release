@@ -3,6 +3,9 @@
 ROOT=`dirname $0`
 MOCKPROJECT=$ROOT/../../usenode-release-mockproject
 
+# Set up mocked dependencies
+export PATH="$ROOT/mock:$PATH"
+
 function assert {
     ACTUAL=$1
     EXPECTED=$2
@@ -19,6 +22,7 @@ function assert {
 # Make sure we can assert things
 assert true true "Can make assertions"
 
+##
 # Test input validation
 MISSING_ARGUMENTS=`$ROOT/../bin/usenode-release`
 assert "$MISSING_ARGUMENTS" "Usage: usenode-publish path/to/project [new_version]" "Script outputs usage message if no arguments are passed"
@@ -26,6 +30,7 @@ assert "$MISSING_ARGUMENTS" "Usage: usenode-publish path/to/project [new_version
 CANNOT_FIND_PACKAGE_JSON=`$ROOT/../bin/usenode-release $MOCKPROJECT-does-not-exist`
 assert "$CANNOT_FIND_PACKAGE_JSON" "Could not find package.json at $MOCKPROJECT-does-not-exist/package.json" "Script throws an error if cannot find package.json at project location"
 
+##
 # Test package.json is updated
 $ROOT/create-mock-project $MOCKPROJECT > /dev/null
 $ROOT/../bin/usenode-release $MOCKPROJECT 2.3.4
@@ -38,3 +43,11 @@ assert "$PACKAGE_COMMIT_MESSAGE_FROM_LOG" "    Version for release 2.3.4" "Chang
 
 REMOTE_LOG=`cd $MOCKPROJECT-head; git log | egrep 'Version'`
 assert "$REMOTE_LOG" "    Version for release 2.3.4" "Changes are pushed to remote"
+
+##
+# Test project is published to npm
+MOCK_NPM_LOG=`cat $ROOT/mock/npm.log`
+assert "$MOCK_NPM_LOG" "publish $MOCKPROJECT" "Project is published to npm"
+
+#tear down
+rm $ROOT/mock/npm.log

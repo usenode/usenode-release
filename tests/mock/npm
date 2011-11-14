@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "Stub: npm called with command '$*'"
+echo "$*" > `dirname $0`/npm.log
