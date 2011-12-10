@@ -51,3 +51,5 @@ assert "$MOCK_NPM_LOG" "publish $MOCKPROJECT" "Project is published to npm"
 
 #tear down
 rm $ROOT/mock/npm.log
+rm -fr $MOCKPROJECT $MOCKPROJECT-head
+
