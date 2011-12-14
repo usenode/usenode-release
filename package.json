@@ -2,7 +2,7 @@
     "author": "Richard Hodgson <contact@rhodgson.co.uk> (http://rhodgson.co.uk)",
     "name": "usenode-release",
     "description": "Release script for releasing usenode projects",
-    "version": "0.0.1",
+    "version": "]0.0.2",
     "homepage": "https://github.com/usenode/usenode-release",
     "repository": {
         "type": "git",
