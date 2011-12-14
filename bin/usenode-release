@@ -8,12 +8,12 @@ PACKAGE="$PROJECT/package.json"
 
 if [ "x$PROJECT" = "x" ]; then
     echo "Usage: usenode-publish path/to/project [new_version]"
-    exit 0
+    exit 1
 fi
 
 if [ ! -r $PACKAGE ]; then
     echo "Could not find package.json at $PACKAGE"
-    exit 0
+    exit 1
 fi
 
 UNCOMMITTED_CHANGES_CHECK=`cd $PROJECT; git st --porcelain`
@@ -37,7 +37,7 @@ fi
 
 if [ "$CURRENT_VERSION" == "$NEW_VERSION" ]; then
     echo "Cannot create release, $NEW_VERSION is the current version."
-    exit 0
+    exit 1
 fi
 
 echo "Creating version $NEW_VERSION"
