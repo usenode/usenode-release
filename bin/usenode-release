@@ -16,6 +16,14 @@ if [ ! -r $PACKAGE ]; then
     exit 0
 fi
 
+UNCOMMITTED_CHANGES_CHECK=`cd $PROJECT; git st --porcelain`
+
+if [ "x$UNCOMMITTED_CHANGES_CHECK" != "x" ]; then
+    echo "Error: There are uncommited changes"
+    echo "$UNCOMMITTED_CHANGES_CHECK"
+    exit 1
+fi
+
 PROJECT_NAME=`cat $PACKAGE | egrep '"name"' | awk -F \" '/([\d]*)/{ print $4}'`
 echo "Publishing '$PROJECT_NAME'."
 

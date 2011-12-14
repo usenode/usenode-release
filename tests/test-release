@@ -31,6 +31,17 @@ CANNOT_FIND_PACKAGE_JSON=`$ROOT/../bin/usenode-release $MOCKPROJECT-does-not-exi
 assert "$CANNOT_FIND_PACKAGE_JSON" "Could not find package.json at $MOCKPROJECT-does-not-exist/package.json" "Script throws an error if cannot find package.json at project location"
 
 ##
+# Test uncommitted changes
+$ROOT/create-mock-project $MOCKPROJECT > /dev/null
+touch $MOCKPROJECT/dummy-file
+
+BLAH=`$ROOT/../bin/usenode-release $MOCKPROJECT 4.5.6 | egrep -i 'error'`
+assert "$BLAH" "Error: There are uncommited changes" "Do not release if there are uncommitted changes"
+
+PACKAGE_VERSION_NUMBER=`cat $MOCKPROJECT/package.json | egrep '"version"'`
+assert "$PACKAGE_VERSION_NUMBER" '"version": "1.2.3"' "Version number in package.json is untouched"
+
+##
 # Test package.json is updated
 $ROOT/create-mock-project $MOCKPROJECT > /dev/null
 $ROOT/../bin/usenode-release $MOCKPROJECT 2.3.4
