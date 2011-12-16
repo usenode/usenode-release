@@ -1,0 +1,8 @@
+#!/bin/bash
+
+ROOT=`dirname $0`
+source $ROOT/assert
+
+##
+# Make sure we can assert things
+assert true true "Can make assertions"

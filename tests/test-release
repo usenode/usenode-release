@@ -1,23 +1,12 @@
 #!/bin/bash
 
 ROOT=`dirname $0`
+source $ROOT/assert
+
 MOCKPROJECT=$ROOT/../../usenode-release-mockproject
 
 # Set up mocked dependencies
 export PATH="$ROOT/mock:$PATH"
-
-function assert {
-    ACTUAL=$1
-    EXPECTED=$2
-    MESSAGE=$3
-
-    if [ "$ACTUAL" == "$EXPECTED" ]; then
-        echo "PASS: $MESSAGE"
-    else
-        echo "FAIL: $MESSAGE"
-        echo "  Failed asserting that '$ACTUAL' is equal to '$EXPECTED'."
-    fi
-}
 
 # Make sure we can assert things
 assert true true "Can make assertions"

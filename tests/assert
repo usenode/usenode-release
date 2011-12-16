@@ -1,0 +1,15 @@
+#!/bin/bash
+
+function assert {
+    ACTUAL=$1
+    EXPECTED=$2
+    MESSAGE=$3
+
+    if [ "$ACTUAL" == "$EXPECTED" ]; then
+        echo "PASS: $MESSAGE"
+    else
+        echo "FAIL: $MESSAGE"
+        echo "  Failed asserting that '$ACTUAL' is equal to '$EXPECTED'."
+    fi
+}
+    

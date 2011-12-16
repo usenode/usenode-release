@@ -1,5 +1,6 @@
 
 test:
+	./tests/test-assert
 	./tests/test-release
 
 release:
