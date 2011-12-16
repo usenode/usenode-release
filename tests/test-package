@@ -1,0 +1,26 @@
+#!/bin/bash
+
+ROOT=`dirname $0`
+source $ROOT/assert
+
+##
+# Test Npm package
+
+PROJECT_ROOT=`cd $ROOT/..; pwd`
+TARGET="$PROJECT_ROOT/../usenode-release-test"
+
+mkdir -p $TARGET/node_modules
+(cd $TARGET
+npm install $PROJECT_ROOT
+)
+
+INSTALLED_PATH="$TARGET/node_modules"
+DIRECTORY_CHECK=`ls $INSTALLED_PATH`
+
+assert "$DIRECTORY_CHECK" "usenode-release" "Package can be installed"
+
+IS_EXECUTABLE=`if [ -x "$INSTALLED_PATH/usenode-release/bin/usenode-release" ]; then echo 'true'; fi`
+assert "$IS_EXECUTABLE" "true" "usenode-release script is executable"
+
+# tear down
+rm -fr $TARGET
