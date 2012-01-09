@@ -7,5 +7,6 @@
     "repository": {
         "type": "git",
         "url": "git://github.com/usenode/usenode-release.git"
-    }
+    },
+    "bin" : { "usenode-release" : "./bin/usenode-release" }
 }
