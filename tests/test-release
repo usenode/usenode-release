@@ -21,8 +21,8 @@ assert "$CANNOT_FIND_PACKAGE_JSON" "Could not find package.json at $MOCKPROJECT-
 $ROOT/create-mock-project $MOCKPROJECT > /dev/null
 touch $MOCKPROJECT/dummy-file
 
-BLAH=`$ROOT/../bin/usenode-release $MOCKPROJECT 4.5.6 | egrep -i 'error'`
-assert "$BLAH" "Error: There are uncommited changes" "Do not release if there are uncommitted changes"
+RELEASE_PROJECT_WITH_UNCOMMITTED=`$ROOT/../bin/usenode-release $MOCKPROJECT 4.5.6 | egrep -i 'error'`
+assert "$RELEASE_PROJECT_WITH_UNCOMMITTED" "Error: There are uncommited changes" "Do not release if there are uncommitted changes"
 
 PACKAGE_VERSION_NUMBER=`cat $MOCKPROJECT/package.json | egrep '"version"'`
 assert "$PACKAGE_VERSION_NUMBER" '"version": "1.2.3"' "Version number in package.json is untouched"
