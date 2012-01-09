@@ -33,6 +33,11 @@ echo "Current version is $CURRENT_VERSION."
 if [ "x$NEW_VERSION" = "x" ]; then
     echo "Enter the new version:"
     read NEW_VERSION
+
+    if [ "x$NEW_VERSION" = "x" ]; then
+        echo "No new version specified."
+        exit 1
+    fi
 fi
 
 if [ "$CURRENT_VERSION" == "$NEW_VERSION" ]; then
