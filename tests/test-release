@@ -8,9 +8,6 @@ MOCKPROJECT=$ROOT/../../usenode-release-mockproject
 # Set up mocked dependencies
 export PATH="$ROOT/mock:$PATH"
 
-# Make sure we can assert things
-assert true true "Can make assertions"
-
 ##
 # Test input validation
 MISSING_ARGUMENTS=`$ROOT/../bin/usenode-release`
