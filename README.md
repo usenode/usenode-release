@@ -12,3 +12,11 @@
 # Todo
 
 * Makefile template
+
+# Tests
+
+Run the tests with:
+
+    make test
+
+
