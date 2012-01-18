@@ -16,7 +16,7 @@ if [ ! -r $PACKAGE ]; then
     exit 1
 fi
 
-UNCOMMITTED_CHANGES_CHECK=`cd $PROJECT; git st --porcelain`
+UNCOMMITTED_CHANGES_CHECK=`cd $PROJECT; git status --porcelain`
 
 if [ "x$UNCOMMITTED_CHANGES_CHECK" != "x" ]; then
     echo "Error: There are uncommited changes"
