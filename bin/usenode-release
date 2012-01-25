@@ -16,7 +16,7 @@ if [ ! -r $PACKAGE ]; then
     exit 1
 fi
 
-UNCOMMITTED_CHANGES_CHECK=`cd $PROJECT; git st --porcelain`
+UNCOMMITTED_CHANGES_CHECK=`cd $PROJECT; git status --porcelain`
 
 if [ "x$UNCOMMITTED_CHANGES_CHECK" != "x" ]; then
     echo "Error: There are uncommited changes"
@@ -24,10 +24,10 @@ if [ "x$UNCOMMITTED_CHANGES_CHECK" != "x" ]; then
     exit 1
 fi
 
-PROJECT_NAME=`cat $PACKAGE | egrep '"name"' | awk -F \" '/([\d]*)/{ print $4}'`
+PROJECT_NAME=`sed -ne 's/[ ,]//g; s/^"name":"\(.*\)"/\1/p' $PACKAGE`
 echo "Publishing '$PROJECT_NAME'."
 
-CURRENT_VERSION=`cat $PACKAGE | egrep '"version"' | awk -F \" '/([\d]*)/{ print $4}'`
+CURRENT_VERSION=`sed -ne 's/[ ,]//g; s/^"version":"\(.*\)"/\1/p' $PACKAGE`
 echo "Current version is $CURRENT_VERSION."
 
 if [ "x$NEW_VERSION" = "x" ]; then
