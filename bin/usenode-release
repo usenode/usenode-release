@@ -24,10 +24,10 @@ if [ "x$UNCOMMITTED_CHANGES_CHECK" != "x" ]; then
     exit 1
 fi
 
-PROJECT_NAME=`cat $PACKAGE | egrep '"name"' | awk -F \" '/([\d]*)/{ print $4}'`
+PROJECT_NAME=`sed -n 's/[ ,]//g; s/.*"name":"\(.*\)".*/\1/p' $PACKAGE`
 echo "Publishing '$PROJECT_NAME'."
 
-CURRENT_VERSION=`cat $PACKAGE | egrep '"version"' | awk -F \" '/([\d]*)/{ print $4}'`
+CURRENT_VERSION=`sed -n 's/[ ,]//g; s/.*"version":"\(.*\)".*/\1/p' $PACKAGE`
 echo "Current version is $CURRENT_VERSION."
 
 if [ "x$NEW_VERSION" = "x" ]; then
